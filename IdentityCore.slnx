@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/IdentityCore.Api/IdentityCore.Api.csproj" />
+    <Project Path="src/IdentityCore.Application/IdentityCore.Application.csproj" />
+    <Project Path="src/IdentityCore.Domain/IdentityCore.Domain.csproj" />
+    <Project Path="src/IdentityCore.Infrastructure/IdentityCore.Infrastructure.csproj" />
+  </Folder>
+</Solution>
