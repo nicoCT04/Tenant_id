@@ -1,23 +1,23 @@
+using DotNetEnv;
+using IdentityCore.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
+
+Env.TraversePath().Load();
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var connectionString = new NpgsqlConnectionStringBuilder
+{
+    Host = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "localhost",
+    Port = int.Parse(Environment.GetEnvironmentVariable("POSTGRES_PORT")!),
+    Database = Environment.GetEnvironmentVariable("POSTGRES_DB"),
+    Username = Environment.GetEnvironmentVariable("POSTGRES_USER"),
+    Password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD")
+}.ConnectionString;
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(connectionString));
