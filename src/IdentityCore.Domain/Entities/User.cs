@@ -1,14 +1,16 @@
+using IdentityCore.Domain.ValueObjects;
+
 namespace IdentityCore.Domain.Entities;
 
 public sealed class User
 {
     public Guid Id { get; private set; }
     public string Email { get; private set; }
-    public string PasswordHash { get; private set; }
+    public PasswordHash PasswordHash { get; private set; }
     public bool IsEmailVerified { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
 
-    private User(Guid id, string email, string passwordHash, bool isEmailVerified, DateTimeOffset createdAt)
+    private User(Guid id, string email, PasswordHash passwordHash, bool isEmailVerified, DateTimeOffset createdAt)
     {
         Id = id;
         Email = email;
@@ -17,7 +19,7 @@ public sealed class User
         CreatedAt = createdAt;
     }
 
-    public static User Register(string email, string passwordHash, DateTimeOffset registeredAt)
+    public static User Register(string email, PasswordHash passwordHash, DateTimeOffset registeredAt)
     {
         return new User(Guid.NewGuid(), email, passwordHash, false, registeredAt);
     }
@@ -27,7 +29,7 @@ public sealed class User
         IsEmailVerified = true;
     }
 
-    public void ChangePassword(string newPasswordHash)
+    public void ChangePassword(PasswordHash newPasswordHash)
     {
         PasswordHash = newPasswordHash;
     }
